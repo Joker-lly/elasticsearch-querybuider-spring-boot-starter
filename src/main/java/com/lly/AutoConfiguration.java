@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
 
 /**
- * 描述：
+ * 描述：配置文件
  *
  * @author: liuliye
  * @since: 2022/3/18

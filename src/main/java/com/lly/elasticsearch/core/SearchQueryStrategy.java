@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 描述：
+ * 描述：根据 queryType 执行不同策略 组装不同的查询方式语句
  *
  * @author: liuliye
  * @since: 2022/2/25

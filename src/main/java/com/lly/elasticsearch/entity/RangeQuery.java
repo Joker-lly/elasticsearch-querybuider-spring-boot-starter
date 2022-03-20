@@ -6,7 +6,7 @@ import org.elasticsearch.index.query.RangeQueryBuilder;
 import java.util.Date;
 
 /**
- * 描述：
+ * 描述：范围查询信息载体
  *
  * @author: liuliye
  * @since: 2022/2/14
@@ -23,7 +23,7 @@ public class RangeQuery {
     public void setFromValue(Object fromValue) {
         if (fromValue instanceof Date) {
             this.fromValue = ((Date) fromValue).getTime();
-        }else {
+        } else {
             this.fromValue = fromValue;
         }
 
@@ -32,7 +32,7 @@ public class RangeQuery {
     public void setToValue(Object toValue) {
         if (toValue instanceof Date) {
             this.toValue = ((Date) toValue).getTime();
-        }else {
+        } else {
             this.toValue = toValue;
         }
     }

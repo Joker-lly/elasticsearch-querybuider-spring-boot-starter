@@ -4,7 +4,7 @@ import lombok.Data;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 
 /**
- * 描述：build
+ * 描述：执行查询策略函数式所用到的信息载体
  *
  * @author: liuliye
  * @since: 2022/2/25
