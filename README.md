@@ -10,7 +10,9 @@
 
 ### 3、使用方法
 
-​		（1）在参数实体类中的字段上加上查询类型的注解	
+​		（1）将项目下载下来后，直接把代码加入到要用的项目中， 或者直接maven install 一下， 将依赖直接加入到项目pom 文件中
+
+​		（2）在参数实体类中的字段上加上查询类型的注解	
 
 ```java
 @Data
@@ -37,7 +39,7 @@ public class QueryData {
 }
 ```
 
-​		（2）在业务类里注入 EsSearchQueryBuilder 然后 调用 方法 initNativeSearchQuery（），如下代码所示
+​		（3）在业务类里注入 EsSearchQueryBuilder 然后 调用 方法 initNativeSearchQuery（），如下代码所示
 
 ```java
 @Autowired
@@ -63,4 +65,4 @@ public IPage<Data> queryDataList(QueryData param) {
 
 ​	因为项目中并没有用到太多的复杂查询， 所以EsQueryType 中的查询类型，若是没有自己想要用的，可以在 EsQueryType 添加自己的查询类型，在 com.lly.elasticsearch.core.SearchQueryStrategy 类中自行扩展查询条件的组装策略
 
- 
+最后如果能帮助到了你， 不妨顺手给点个星星
