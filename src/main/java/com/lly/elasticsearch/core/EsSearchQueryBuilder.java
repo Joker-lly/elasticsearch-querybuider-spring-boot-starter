@@ -1,11 +1,10 @@
 package com.lly.elasticsearch.core;
 
-
-import com.lly.elasticsearch.entity.RangeQuery;
 import com.lly.elasticsearch.EsQueryType;
 import com.lly.elasticsearch.anno.EsQueryAnnotation;
-import com.lly.elasticsearch.entity.SortField;
+import com.lly.elasticsearch.entity.RangeQuery;
 import com.lly.elasticsearch.entity.SearchQuery;
+import com.lly.elasticsearch.entity.SortField;
 import com.lly.elasticsearch.function.QueryStrategyFunction;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -28,12 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * @author LM
- * @version V1.0
- * @description 组装ES的查询条件
- * @date 2021-12-23
- */
 /**
  * 描述：根据查询条件组装查询 es 查询语句
  *
@@ -61,7 +54,7 @@ public class EsSearchQueryBuilder {
      * @throws NoSuchFieldException
      * @throws ParseException
      */
-    public  NativeSearchQuery initNativeSearchQuery(Object obj) throws Exception {
+    public NativeSearchQuery initNativeSearchQuery(Object obj) throws Exception {
         long start = System.currentTimeMillis();
         NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
         installSearchQuery(queryBuilder, obj);
@@ -81,7 +74,7 @@ public class EsSearchQueryBuilder {
      * @throws InvocationTargetException
      * @throws NoSuchFieldException
      */
-    public  void installSearchQuery(NativeSearchQueryBuilder nativeSearchQueryBuilder, Object obj) throws Exception {
+    public void installSearchQuery(NativeSearchQueryBuilder nativeSearchQueryBuilder, Object obj) throws Exception {
         Class clazz = obj.getClass();
         PropertyDescriptor[] origDescriptors = PropertyUtils.getPropertyDescriptors(obj);
         //多查询条件  must 可不断添加条件
@@ -143,7 +136,7 @@ public class EsSearchQueryBuilder {
         }
     }
 
-    private  void dealWithRangeQuery(BoolQueryBuilder queryBuilder, Map<String, RangeQuery> rangeMap) {
+    private void dealWithRangeQuery(BoolQueryBuilder queryBuilder, Map<String, RangeQuery> rangeMap) {
 
         rangeMap.forEach((fieldName, rangeQuery) -> {
             RangeQueryBuilder rangeQuery1 = rangeQuery.getRangeQuery();
@@ -152,7 +145,7 @@ public class EsSearchQueryBuilder {
         });
     }
 
-    private  void packRangeQueryConditions(Map<String, RangeQuery> rangeMap, Object value, EsQueryAnnotation annotation, String queryType) {
+    private void packRangeQueryConditions(Map<String, RangeQuery> rangeMap, Object value, EsQueryAnnotation annotation, String queryType) {
         if (isRangeQueryField(annotation)) {
             String fieldName = annotation.fieldName();
             if (rangeMap.containsKey(fieldName)) {
@@ -175,7 +168,7 @@ public class EsSearchQueryBuilder {
         }
     }
 
-    private  boolean isRangeQueryField(EsQueryAnnotation annotation) {
+    private boolean isRangeQueryField(EsQueryAnnotation annotation) {
         boolean b = false;
         if (annotation.type().equals(EsQueryType.FROM))
             b = true;
@@ -187,7 +180,7 @@ public class EsSearchQueryBuilder {
 
     }
 
-    private  void sortQuery(NativeSearchQueryBuilder nativeSearchQueryBuilder, Object sort) {
+    private void sortQuery(NativeSearchQueryBuilder nativeSearchQueryBuilder, Object sort) {
         if (sort != null) {
             try {
                 SortField sorts = (SortField) sort;
@@ -210,8 +203,8 @@ public class EsSearchQueryBuilder {
      * @param value
      * @return
      */
-    private  void getWechatProgramNativeSearchQuery(BoolQueryBuilder queryBuilder,
-                                                          String name, String rule, Object value) {
+    private void getWechatProgramNativeSearchQuery(BoolQueryBuilder queryBuilder,
+                                                   String name, String rule, Object value) {
 
         SearchQuery searchQuery = new SearchQuery(queryBuilder, name, rule, value);
         QueryStrategyFunction<BoolQueryBuilder, SearchQuery> function = SearchQueryStrategy.map.get(rule);
