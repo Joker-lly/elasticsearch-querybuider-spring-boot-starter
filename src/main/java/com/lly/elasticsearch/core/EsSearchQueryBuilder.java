@@ -48,11 +48,7 @@ public class EsSearchQueryBuilder {
      *
      * @param obj
      * @return
-     * @throws NoSuchMethodException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
-     * @throws NoSuchFieldException
-     * @throws ParseException
+     * @throws Exception
      */
     public NativeSearchQuery initNativeSearchQuery(Object obj) throws Exception {
         long start = System.currentTimeMillis();
@@ -67,12 +63,7 @@ public class EsSearchQueryBuilder {
      *
      * @param nativeSearchQueryBuilder
      * @param obj
-     * @throws NoSuchMethodException
-     * @throws SecurityException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
-     * @throws NoSuchFieldException
+     * @throws Exception
      */
     public void installSearchQuery(NativeSearchQueryBuilder nativeSearchQueryBuilder, Object obj) throws Exception {
         Class clazz = obj.getClass();
