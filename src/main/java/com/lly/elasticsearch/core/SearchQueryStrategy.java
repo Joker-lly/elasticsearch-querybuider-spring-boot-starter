@@ -21,41 +21,44 @@ import java.util.Map;
 @Component
 public class SearchQueryStrategy {
 
-    public static Map<String, QueryStrategyFunction<BoolQueryBuilder, SearchQuery>> map =new HashMap<>();
+    public static Map<String, QueryStrategyFunction<BoolQueryBuilder, SearchQuery>> map = new HashMap<>();
 
     @PostConstruct
-    private void initMap(){
-        map.put(EsQueryType.MATCH_OR, searchQuery ->this.buildMatchOr(searchQuery));
-        map.put(EsQueryType.TERM, searchQuery ->this.buildMatch(searchQuery));
-        map.put(EsQueryType.MATCH_AND, searchQuery ->this.buildMatchAnd(searchQuery));
-        map.put(EsQueryType.SUFFIX_FUZZY, searchQuery ->this.buildMatchSuffixFuzzy(searchQuery));
-        map.put(EsQueryType.ALL_FUZZY, searchQuery ->this.buildMatchAllFuzzy(searchQuery));
-        map.put(EsQueryType.PRE_FUZZY, searchQuery ->this.buildMatchPreFuzzy(searchQuery));
+    private void initMap() {
+        map.put(EsQueryType.MATCH_OR, searchQuery -> this.buildMatchOr(searchQuery));
+        map.put(EsQueryType.TERM, searchQuery -> this.buildMatch(searchQuery));
+        map.put(EsQueryType.MATCH_AND, searchQuery -> this.buildMatchAnd(searchQuery));
+        map.put(EsQueryType.SUFFIX_FUZZY, searchQuery -> this.buildMatchSuffixFuzzy(searchQuery));
+        map.put(EsQueryType.ALL_FUZZY, searchQuery -> this.buildMatchAllFuzzy(searchQuery));
+        map.put(EsQueryType.PRE_FUZZY, searchQuery -> this.buildMatchPreFuzzy(searchQuery));
     }
 
-    void buildMatchOr(SearchQuery query){
+    void buildMatchOr(SearchQuery query) {
         query.getQueryBuilder().must(QueryBuilders.matchQuery(query.getName(), query.getValue())
                 .operator(Operator.OR).minimumShouldMatch("50%"));
     }
-    void buildMatchAnd(SearchQuery query){
+
+    void buildMatchAnd(SearchQuery query) {
         query.getQueryBuilder().must(QueryBuilders.matchQuery(query.getName(), query.getValue())
                 .operator(Operator.AND));
     }
-    void buildMatch(SearchQuery query){
+
+    void buildMatch(SearchQuery query) {
         query.getQueryBuilder().must(QueryBuilders.termQuery(query.getName(), query.getValue()));
     }
 
-    void buildMatchAllFuzzy(SearchQuery query){
-        String value = "*"+query.getValue().toString() +"*";
+    void buildMatchAllFuzzy(SearchQuery query) {
+        String value = "*" + query.getValue().toString() + "*";
         query.getQueryBuilder().must(QueryBuilders.wildcardQuery(query.getName(), value));
     }
 
-    void buildMatchPreFuzzy(SearchQuery query){
-        String value = "*"+query.getValue().toString();
+    void buildMatchPreFuzzy(SearchQuery query) {
+        String value = "*" + query.getValue().toString();
         query.getQueryBuilder().must(QueryBuilders.wildcardQuery(query.getName(), value));
     }
-    void buildMatchSuffixFuzzy(SearchQuery query){
-        String value = query.getValue().toString() +"*";
+
+    void buildMatchSuffixFuzzy(SearchQuery query) {
+        String value = query.getValue().toString() + "*";
         query.getQueryBuilder().must(QueryBuilders.wildcardQuery(query.getName(), value));
     }
 }
