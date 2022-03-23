@@ -4,7 +4,6 @@ import com.lly.elasticsearch.core.EsSearchQueryBuilder;
 import com.lly.elasticsearch.core.SearchQueryStrategy;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.annotation.Order;
 
 /**
  * 描述：配置文件
@@ -14,6 +13,5 @@ import org.springframework.core.annotation.Order;
  */
 @Configuration
 @Import({EsSearchQueryBuilder.class, SearchQueryStrategy.class})
-@Order
 public class AutoConfiguration {
 }

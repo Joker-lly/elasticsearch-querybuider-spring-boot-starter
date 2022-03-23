@@ -16,7 +16,6 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
@@ -31,7 +30,6 @@ import java.util.Objects;
  * @since: 2022/3/18
  */
 @Slf4j
-@Component
 public class EsSearchQueryBuilder {
 
     /**

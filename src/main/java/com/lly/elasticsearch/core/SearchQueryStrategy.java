@@ -6,8 +6,6 @@ import com.lly.elasticsearch.function.QueryStrategyFunction;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.springframework.stereotype.Component;
-
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +16,6 @@ import java.util.Map;
  * @author: liuliye
  * @since: 2022/2/25
  */
-@Component
 public class SearchQueryStrategy {
 
     public static Map<String, QueryStrategyFunction<BoolQueryBuilder, SearchQuery>> map = new HashMap<>();
