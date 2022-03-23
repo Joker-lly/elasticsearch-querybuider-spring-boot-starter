@@ -7,11 +7,7 @@ package com.lly.elasticsearch.function;
  * @since: 2022/2/25
  */
 @FunctionalInterface
-public interface QueryStrategyFunction<R, V> {
-
-    default R apply(V v) {
-        return null;
-    }
+public interface QueryStrategyFunction<V> {
 
     void build(V v);
 }

@@ -9,6 +9,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * 描述：根据 queryType 执行不同策略 组装不同的查询方式语句
@@ -18,7 +19,7 @@ import java.util.Map;
  */
 public class SearchQueryStrategy {
 
-    public static Map<String, QueryStrategyFunction<BoolQueryBuilder, SearchQuery>> map = new HashMap<>();
+    public static Map<String, QueryStrategyFunction<SearchQuery>> map = new HashMap<>();
 
     @PostConstruct
     private void initMap() {

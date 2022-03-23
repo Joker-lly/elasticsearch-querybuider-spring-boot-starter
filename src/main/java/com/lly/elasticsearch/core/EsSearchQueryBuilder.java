@@ -193,7 +193,7 @@ public class EsSearchQueryBuilder {
                                                    String name, String rule, Object value) {
 
         SearchQuery searchQuery = new SearchQuery(queryBuilder, name, rule, value);
-        QueryStrategyFunction<BoolQueryBuilder, SearchQuery> function = SearchQueryStrategy.map.get(rule);
+        QueryStrategyFunction<SearchQuery> function = SearchQueryStrategy.map.get(rule);
 
         if (function == null) {
             log.error("没有对应的查询策略,rule = " + rule);
