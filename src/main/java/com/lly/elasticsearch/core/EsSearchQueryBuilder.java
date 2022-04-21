@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.util.StringUtils;
+
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -73,39 +74,39 @@ public class EsSearchQueryBuilder {
 
         for (PropertyDescriptor propertyDescriptor : origDescriptors) {
             //获取属性名
-            String name = propertyDescriptor.getName();
+            String filedName = propertyDescriptor.getName();
             /** 获取class属性直接跳过，无需处理 */
-            if ("class".equals(name)) {
+            if ("class".equals(filedName)) {
                 continue;
             }
-            /** 获取属性类型 */
-            String type = propertyDescriptor.getPropertyType().toString();
+
             /** 获取方法名 */
-            Method methodName = clazz.getMethod("get" + name.substring(0, 1).toUpperCase() + name.substring(1), null);
+            Method methodName = clazz.getMethod("get" + filedName.substring(0, 1).toUpperCase()
+                    + filedName.substring(1), null);
             /**获取属性值*/
-            Object value = methodName.invoke(obj, null) /*== null ? "" : methodName.invoke(obj, null).toString()*/;
+            Object filedValue = methodName.invoke(obj, null);
             /** 将分页需要的pageNo和pageSize放入Map集合后续处理 */
-            if (("pageNo".equals(name) || "pageSize".equals(name)) && !Objects.isNull(value)) {
-                pageMap.put(name, value);
+            if (("pageNo".equals(filedName) || "pageSize".equals(filedName)) && !Objects.isNull(filedValue)) {
+                pageMap.put(filedName, filedValue);
                 continue;
             }
 
             /** 获取查询条件注解 */
-            EsQueryAnnotation annotation = clazz.getDeclaredField(name).getAnnotation(EsQueryAnnotation.class);
+            EsQueryAnnotation annotation = clazz.getDeclaredField(filedName).getAnnotation(EsQueryAnnotation.class);
 
             if (annotation != null && annotation.type().equals(EsQueryType.SORT)) {
-                sort = value;
+                sort = filedValue;
                 continue;
             }
             // fieldName , TO OR FROM , value
             String queryType = annotation == null ? EsQueryType.TERM : annotation.type();
-            if (!Objects.isNull(value)) {
+            if (!Objects.isNull(filedValue)) {
                 /** 确认是否需要进行区间查询 */
                 if (annotation != null) {
-                    packRangeQueryConditions(rangeMap, value, annotation, queryType);
+                    packRangeQueryConditions(rangeMap, filedValue, annotation, queryType);
                 }
                 // 处理普通查询
-                getWechatProgramNativeSearchQuery(queryBuilder, name, queryType, value);
+                getWechatProgramNativeSearchQuery(queryBuilder, filedName, queryType, filedValue);
             }
         }
 
@@ -123,7 +124,6 @@ public class EsSearchQueryBuilder {
     }
 
     private void dealWithRangeQuery(BoolQueryBuilder queryBuilder, Map<String, RangeQuery> rangeMap) {
-
         rangeMap.forEach((fieldName, rangeQuery) -> {
             RangeQueryBuilder rangeQuery1 = rangeQuery.getRangeQuery();
             rangeQuery1.from(rangeQuery.getFromValue()).to(rangeQuery.getToValue());
@@ -185,18 +185,18 @@ public class EsSearchQueryBuilder {
      * 根据传入参数组装NativeSearchQuery查询条件对象
      *
      * @param name
-     * @param rule
+     * @param queryType
      * @param value
      * @return
      */
     private void getWechatProgramNativeSearchQuery(BoolQueryBuilder queryBuilder,
-                                                   String name, String rule, Object value) {
+                                                   String name, String queryType, Object value) {
 
-        SearchQuery searchQuery = new SearchQuery(queryBuilder, name, rule, value);
-        QueryStrategyFunction<SearchQuery> function = SearchQueryStrategy.map.get(rule);
+        SearchQuery searchQuery = new SearchQuery(queryBuilder, name, queryType, value);
+        QueryStrategyFunction<SearchQuery> function = SearchQueryStrategy.map.get(queryType);
 
         if (function == null) {
-            log.error("没有对应的查询策略,rule = " + rule);
+            log.error("没有对应的查询策略,queryType = " + queryType);
         } else {
             function.build(searchQuery);
         }

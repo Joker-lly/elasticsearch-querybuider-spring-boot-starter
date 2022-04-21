@@ -21,4 +21,6 @@ public @interface EsQueryAnnotation {
      * @return
      */
     String fieldName() default "";
+
+    String minimumShouldMatch() default "";
 }
